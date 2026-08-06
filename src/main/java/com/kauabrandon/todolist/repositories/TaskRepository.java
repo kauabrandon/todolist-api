@@ -1,8 +1,6 @@
 package com.kauabrandon.todolist.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import com.kauabrandon.todolist.models.Task;
 import org.springframework.stereotype.Repository;
 

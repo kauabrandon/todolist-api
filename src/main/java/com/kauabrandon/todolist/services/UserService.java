@@ -1,14 +1,11 @@
 package com.kauabrandon.todolist.services;
 
 import com.kauabrandon.todolist.models.User;
-import com.kauabrandon.todolist.repositories.TaskRepository;
 import com.kauabrandon.todolist.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 
-import javax.management.RuntimeErrorException;
 import java.util.Optional;
 
 @Service
@@ -16,9 +13,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
 
     public User findById(Long id) {
         Optional<User> user = this.userRepository.findById(id);
@@ -28,7 +22,6 @@ public class UserService {
     @Transactional
     public User create(User obj) {
         obj = this.userRepository.save(obj);
-        this.taskRepository.saveAll(obj.getTasks());
         return obj;
     }
 
