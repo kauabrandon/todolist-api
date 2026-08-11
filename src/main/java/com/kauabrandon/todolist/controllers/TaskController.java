@@ -1,5 +1,6 @@
 package com.kauabrandon.todolist.controllers;
 
+import com.kauabrandon.todolist.dtos.TaskResponseDTO;
 import com.kauabrandon.todolist.models.Task;
 import com.kauabrandon.todolist.services.TaskService;
 import jakarta.validation.Valid;
@@ -19,15 +20,16 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
-    
-    public ResponseEntity<Task> findById(@PathVariable Long id) {
-        Task obj = this.taskService.findById(id);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponseDTO> findById(@PathVariable Long id) {
+        TaskResponseDTO obj = this.taskService.findByIdAsDTO(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId) {
-        List<Task> objs = this.taskService.findAllByUserId(userId);
+    public ResponseEntity<List<TaskResponseDTO>> findAllByUserId(@PathVariable Long userId) {
+        List<TaskResponseDTO> objs = this.taskService.findAllByUserId(userId);
         return ResponseEntity.ok().body(objs);
     }
 
