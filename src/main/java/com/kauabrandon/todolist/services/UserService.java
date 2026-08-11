@@ -1,5 +1,6 @@
 package com.kauabrandon.todolist.services;
 
+import com.kauabrandon.todolist.dtos.UserResponseDTO;
 import com.kauabrandon.todolist.models.User;
 import com.kauabrandon.todolist.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public User findById(Long id) {
         Optional<User> user = this.userRepository.findById(id);
         return user.orElseThrow(() -> new RuntimeException("Usuário não encontrado! Id: " + id + ", Tipo " + User.class.getName()));
@@ -23,6 +25,12 @@ public class UserService {
     public User create(User obj) {
         obj = this.userRepository.save(obj);
         return obj;
+    }
+
+    @Transactional
+    public UserResponseDTO findByIdAsDTO(Long id) {
+        User user = findById(id);
+        return new UserResponseDTO(user);
     }
 
     public User update(User obj) {
