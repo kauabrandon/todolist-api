@@ -1,5 +1,6 @@
 package com.kauabrandon.todolist.controllers;
 
+import com.kauabrandon.todolist.dtos.UserResponseDTO;
 import com.kauabrandon.todolist.models.User;
 import com.kauabrandon.todolist.services.UserService;
 import jakarta.validation.ConstraintViolationException;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import com.kauabrandon.todolist.dtos.UserResponseDTO;
 
 import java.net.URI;
 
@@ -21,8 +23,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
-        User obj = this.userService.findById(id);
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
+        UserResponseDTO obj = this.userService.findByIdAsDTO(id);
         return ResponseEntity.ok().body(obj);
     }
 
