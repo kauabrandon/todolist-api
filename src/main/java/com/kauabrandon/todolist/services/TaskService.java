@@ -1,5 +1,6 @@
 package com.kauabrandon.todolist.services;
 
+import com.kauabrandon.todolist.dtos.TaskResponseDTO;
 import com.kauabrandon.todolist.models.Task;
 import com.kauabrandon.todolist.models.User;
 import com.kauabrandon.todolist.repositories.TaskRepository;
@@ -24,9 +25,15 @@ public class TaskService {
         return task.orElseThrow(() -> new RuntimeException("Tarefa não encontrada! Id: " + id + ", Tipo " + Task.class.getName()));
         }
 
-    public List<Task> findAllByUserId(Long userId) {
+    public List<TaskResponseDTO> findAllByUserId(Long userId) {
         List<Task> tasks = this.taskRepository.findByUser_Id(userId);
-        return tasks;
+        return tasks.stream().map(TaskResponseDTO::new).toList();
+    }
+
+    @Transactional
+    public TaskResponseDTO findByIdAsDTO(Long id) {
+        Task task = findById(id);
+        return new TaskResponseDTO(task);
     }
 
     @Transactional
