@@ -4,6 +4,8 @@ import com.kauabrandon.todolist.dtos.TaskResponseDTO;
 import com.kauabrandon.todolist.models.Task;
 import com.kauabrandon.todolist.models.User;
 import com.kauabrandon.todolist.repositories.TaskRepository;
+import com.kauabrandon.todolist.services.exceptions.DataBindingViolationException;
+import com.kauabrandon.todolist.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +24,7 @@ public class TaskService {
 
     public Task findById(Long id) {
         Optional<Task> task = this.taskRepository.findById(id);
-        return task.orElseThrow(() -> new RuntimeException("Tarefa não encontrada! Id: " + id + ", Tipo " + Task.class.getName()));
+        return task.orElseThrow(() -> new ObjectNotFoundException("Tarefa não encontrada! Id: " + id + ", Tipo " + Task.class.getName()));
         }
 
     public List<TaskResponseDTO> findAllByUserId(Long userId) {
@@ -57,7 +59,7 @@ public class TaskService {
         try {
             this.taskRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Não foi possível excluir, há entidades relacionadas!");
+            throw new DataBindingViolationException("Não foi possível excluir, há entidades relacionadas!");
         }
     }
 }
