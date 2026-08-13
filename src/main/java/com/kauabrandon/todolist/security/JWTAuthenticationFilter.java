@@ -35,14 +35,17 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userCredentials.getUsername(), userCredentials.getPassword(), new ArrayList<>());
 
-            Authentication authentication = this.authenticationManager.authenticate(authToken);
+            return this.authenticationManager.authenticate(authToken);
 
-            return authentication;
-        } catch (Exception e){
-            throw new RuntimeException(e);
+        } catch (AuthenticationException e) {
+            throw e;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao ler as credenciais", e);
         }
     }
 
+    @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) throws IOException, ServletException {
         UserSpringSecurity userSpringSecurity = (UserSpringSecurity) authentication.getPrincipal();
         String username = ((UserSpringSecurity) authentication.getPrincipal()).getUsername();

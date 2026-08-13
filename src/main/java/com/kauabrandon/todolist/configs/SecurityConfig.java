@@ -1,17 +1,19 @@
 package com.kauabrandon.todolist.configs;
 
 import com.kauabrandon.todolist.security.JWTAuthenticationFilter;
+import com.kauabrandon.todolist.security.JWTAuthorizationFilter;
 import com.kauabrandon.todolist.security.JWTUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -22,7 +24,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private static final String[] PUBLIC_MATCHERS = {
@@ -40,7 +42,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager, JWTUtil jwtUtil) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserDetailsService userDetailsService) throws Exception {
+        JWTAuthenticationFilter authenticationFilter =
+                new JWTAuthenticationFilter(authenticationManager, jwtUtil);
+
+        JWTAuthorizationFilter authorizationFilter =
+                new JWTAuthorizationFilter(jwtUtil, userDetailsService);
+
         http
                 .cors(cors -> {})
                 .csrf(AbstractHttpConfigurer::disable)
@@ -53,7 +61,14 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationManager(authenticationManager)
-                .addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil));
+                .addFilterAt(
+                        authenticationFilter,
+                        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterBefore(
+                        authorizationFilter,
+                        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }

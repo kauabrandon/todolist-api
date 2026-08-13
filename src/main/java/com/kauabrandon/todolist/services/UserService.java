@@ -4,6 +4,7 @@ import com.kauabrandon.todolist.dtos.UserResponseDTO;
 import com.kauabrandon.todolist.models.User;
 import com.kauabrandon.todolist.models.enums.ProfileEnum;
 import com.kauabrandon.todolist.repositories.UserRepository;
+import com.kauabrandon.todolist.services.exceptions.DataBindingViolationException;
 import com.kauabrandon.todolist.services.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -53,7 +54,7 @@ public class UserService {
         try {
             this.userRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Não foi possível excluir, há entidades relacionadas!");
+            throw new DataBindingViolationException("Não foi possível excluir, há entidades relacionadas!");
         }
     }
 }

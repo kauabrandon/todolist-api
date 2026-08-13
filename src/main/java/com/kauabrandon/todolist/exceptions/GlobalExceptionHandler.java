@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.ObjectNotFoundException;
+import com.kauabrandon.todolist.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -134,10 +134,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        Integer status = HttpStatus.FORBIDDEN.value();
+        Integer status = HttpStatus.UNAUTHORIZED.value();
+        ErrorResponse errorResponse = new ErrorResponse(status, "Email ou senha estão inválidos.");
         response.setStatus(status);
         response.setContentType("application/json");
-        ErrorResponse errorResponse = new ErrorResponse(status, "Email ou senha estão inválidos.");
         response.getWriter().append(errorResponse.toJson());
     }
 }

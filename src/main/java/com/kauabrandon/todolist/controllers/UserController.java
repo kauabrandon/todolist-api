@@ -3,14 +3,12 @@ package com.kauabrandon.todolist.controllers;
 import com.kauabrandon.todolist.dtos.UserResponseDTO;
 import com.kauabrandon.todolist.models.User;
 import com.kauabrandon.todolist.services.UserService;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import com.kauabrandon.todolist.dtos.UserResponseDTO;
 
 import java.net.URI;
 
@@ -48,14 +46,6 @@ public class UserController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.userService.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @RestControllerAdvice
-    public class GlobalExceptionHandler {
-        @ExceptionHandler(ConstraintViolationException.class)
-        public ResponseEntity<String> handleConstraintViolation(ConstraintViolationException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
     }
 
 }
