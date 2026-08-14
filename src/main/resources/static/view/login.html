@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - ToDo List App</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.js"></script>
+    <!--
+      Credits: https://frontendshape.com/post/bootstrap-5-login-form-page-example
+    -->
+</head>
+
+<body>
+<!-- OK Toast -->
+<div
+        id="okToast"
+        class="toast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+>
+    <div class="toast-header">
+        <strong class="me-auto">Sucesso</strong>
+        <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="toast"
+                aria-label="Fechar"
+        ></button>
+    </div>
+    <div class="toast-body">Login realizado com sucesso, redirecionando...</div>
+</div>
+
+<!-- Error Toast -->
+<div
+        id="errorToast"
+        class="toast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+>
+    <div class="toast-header">
+        <strong class="me-auto">Erro</strong>
+        <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="toast"
+                aria-label="Fechar"
+        ></button>
+    </div>
+    <div class="toast-body">Usuário ou senha inválidos..</div>
+</div>
+
+<div class="vh-100 d-flex justify-content-center align-items-center">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="card bg-white">
+                    <div class="card-body p-5">
+                        <form class="mb-3 mt-md-4">
+                            <h2 class="fw-bold mb-2 text-uppercase">
+                                ToDo List App - Login
+                            </h2>
+                            <p class="mb-2">Informe seu usuário e senha!</p>
+                            <div class="mb-3">
+                                <label class="form-label">Usuário</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        required="true"
+                                        id="username"
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Senha</label>
+                                <input
+                                        type="password"
+                                        class="form-control"
+                                        placeholder="*******"
+                                        required="true"
+                                        id="password"
+                                />
+                            </div>
+                            <div class="d-grid">
+                                <button
+                                        class="btn btn-outline-dark"
+                                        onclick="login()"
+                                        type="button"
+                                >
+                                    Entrar
+                                </button>
+                            </div>
+                        </form>
+                        <div>
+                            <p class="mb-0 text-center">
+                                Não tem uma conta ainda?
+                                <a href="signup.html" class="text-primary fw-bold"
+                                >Cadastre-se</a
+                                >
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="scripts/login.js"></script>
+</body>
+</html>

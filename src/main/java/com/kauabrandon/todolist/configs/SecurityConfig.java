@@ -28,7 +28,8 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_MATCHERS = {
-            "/"
+            "/",
+            "/view/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_POST = {
