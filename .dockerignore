@@ -1,4 +1,15 @@
-FROM ubuntu:latest
-LABEL authors="Kaua"
-
-ENTRYPOINT ["top", "-b"]
+**/target/
+**/.git
+**/.gitignore
+**/.gitattributes
+**/.env
+**/.idea
+**/*.iml
+**/docs/
+**/view/
+**/README.md
+**/LICENSE
+**/.vscode
+**/.editorconfig
+**/Dockerfile
+**/docker-compose.yml
