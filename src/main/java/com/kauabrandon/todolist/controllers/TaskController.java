@@ -2,6 +2,7 @@ package com.kauabrandon.todolist.controllers;
 
 import com.kauabrandon.todolist.dtos.TaskResponseDTO;
 import com.kauabrandon.todolist.models.Task;
+import com.kauabrandon.todolist.models.projection.TaskProjection;
 import com.kauabrandon.todolist.services.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,14 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponseDTO> findById(@PathVariable Long id) {
-        TaskResponseDTO obj = this.taskService.findByIdAsDTO(id);
+    public ResponseEntity<Task> findById(@PathVariable Long id) {
+        Task obj = this.taskService.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<TaskResponseDTO>> findAllByUser() {
-        List<TaskResponseDTO> objs = this.taskService.findAllByUser();
+    public ResponseEntity<List<TaskProjection>> findAllByUser() {
+        List<TaskProjection> objs = this.taskService.findAllByUser();
         return ResponseEntity.ok().body(objs);
     }
 

@@ -1,6 +1,5 @@
 package com.kauabrandon.todolist.models.enums;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

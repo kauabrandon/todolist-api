@@ -4,6 +4,7 @@ import com.kauabrandon.todolist.dtos.TaskResponseDTO;
 import com.kauabrandon.todolist.models.Task;
 import com.kauabrandon.todolist.models.User;
 import com.kauabrandon.todolist.models.enums.ProfileEnum;
+import com.kauabrandon.todolist.models.projection.TaskProjection;
 import com.kauabrandon.todolist.repositories.TaskRepository;
 import com.kauabrandon.todolist.security.UserSpringSecurity;
 import com.kauabrandon.todolist.services.exceptions.AuthorizationException;
@@ -26,28 +27,24 @@ public class TaskService {
     private UserService userService;
 
     public Task findById(Long id) {
-        Task task = this.taskRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Tarefa não encontrada! Id: " + id + ", Tipo " + Task.class.getName()));
+        Task task = this.taskRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(
+                "Tarefa não encontrada! Id: " + id + ", Tipo: " + Task.class.getName()));
 
         UserSpringSecurity userSpringSecurity = UserService.authenticated();
-        if (Objects.isNull(userSpringSecurity) || !userSpringSecurity.hasRole(ProfileEnum.ADMIN) && !userHasTask(userSpringSecurity,task))
+        if (Objects.isNull(userSpringSecurity)
+                || !userSpringSecurity.hasRole(ProfileEnum.ADMIN) && !userHasTask(userSpringSecurity, task))
             throw new AuthorizationException("Acesso negado!");
 
         return task;
     }
 
-    public List<TaskResponseDTO> findAllByUser() {
+    public List<TaskProjection> findAllByUser() {
         UserSpringSecurity userSpringSecurity = UserService.authenticated();
         if (Objects.isNull(userSpringSecurity))
             throw new AuthorizationException("Acesso negado!");
 
-        List<Task> tasks = this.taskRepository.findByUser_Id(userSpringSecurity.getId());
-        return tasks.stream().map(TaskResponseDTO::new).toList();
-    }
-
-    @Transactional
-    public TaskResponseDTO findByIdAsDTO(Long id) {
-        Task task = findById(id);
-        return new TaskResponseDTO(task);
+        List<TaskProjection> tasks = this.taskRepository.findByUser_Id(userSpringSecurity.getId());
+        return tasks;
     }
 
     @Transactional

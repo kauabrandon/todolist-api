@@ -2,12 +2,15 @@ package com.kauabrandon.todolist.services;
 
 import com.kauabrandon.todolist.dtos.UserResponseDTO;
 import com.kauabrandon.todolist.models.User;
+import com.kauabrandon.todolist.models.dto.UserCreateDTO;
+import com.kauabrandon.todolist.models.dto.UserUpdateDTO;
 import com.kauabrandon.todolist.models.enums.ProfileEnum;
 import com.kauabrandon.todolist.repositories.UserRepository;
 import com.kauabrandon.todolist.security.UserSpringSecurity;
 import com.kauabrandon.todolist.services.exceptions.AuthorizationException;
 import com.kauabrandon.todolist.services.exceptions.DataBindingViolationException;
 import com.kauabrandon.todolist.services.exceptions.ObjectNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -74,4 +77,19 @@ public class UserService {
             return null;
         }
     }
+
+    public User fromDTO(@Valid UserCreateDTO obj) {
+        User user = new User();
+        user.setUsername(obj.getUsername());
+        user.setPassword(obj.getPassword());
+        return user;
+    }
+
+    public User fromDTO(@Valid UserUpdateDTO obj) {
+        User user = new User();
+        user.setId(obj.getId());
+        user.setPassword(obj.getPassword());
+        return user;
+    }
+
 }
